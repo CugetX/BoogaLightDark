@@ -1,0 +1,7 @@
+.vercel
+*.ai
+*.tmp
+*.fla
+References/
+Talking_Animation_Test/
+nomad_hand_poses_reference.*

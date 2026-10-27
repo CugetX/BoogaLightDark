@@ -1,0 +1,150 @@
+/* BOOGAS brand colours, with readable supporting shades. */
+:root[data-palette^="brand-"]{--paper:#eee6d6;--white:#f5efe3;--ink:#20221f;--green:#405a32;--muted:#5c6254;--line:#c3c6b4;--sage:#dfe5ce;--panel:#e5e4d4;--accent:#405a32;--action:#9fc17c;--footer:#20221f;--on-dark:#eee6d6;--muted-dark:#c4c8b7;--focus:#405a32;--button-text:#eee6d6;--brand-detail:#9fc17c;--brand-dark:#20221f;--story-accent:#405a32}
+:root[data-palette=brand-ochre]{--green:#6d521a;--sage:#e9ddbd;--panel:#e9e0c9;--accent:#6d521a;--action:#d0a843;--focus:#6d521a;--brand-detail:#d0a843;--story-accent:#6d521a}
+:root[data-palette=brand-rose]{--green:#405a32;--sage:#ebd2cf;--panel:#ecded4;--accent:#405a32;--action:#9fc17c;--brand-detail:#efa7bb;--story-accent:#405a32}
+:root[data-mode=dark][data-palette^="brand-"]{--paper:#20221f;--white:#262825;--ink:#eee6d6;--green:#9fc17c;--muted:#c1c4ba;--line:#484c43;--sage:#292c27;--panel:#262825;--accent:#9fc17c;--action:#9fc17c;--footer:#191b18;--on-dark:#eee6d6;--muted-dark:#c1c4ba;--focus:#9fc17c;--button-text:#20221f;--story-accent:#9fc17c}
+:root[data-mode=dark][data-palette=brand-ochre]{--story-accent:#d0a843}
+:root[data-mode=dark][data-palette=brand-rose]{--story-accent:#efa7bb}
+html[data-palette^="brand-"] .button:not(.button-light):not(.button-cream){background:var(--action);border-color:var(--action);color:#20221f}
+html[data-palette^="brand-"] .top-note{background:#20221f;color:#eee6d6;border-bottom:0}
+html[data-palette^="brand-"] .campaign-code-link{background:color-mix(in srgb,var(--paper) 94%,transparent);border-color:var(--muted);color:var(--ink)}
+html[data-palette^="brand-"] .kit-stamp{background:var(--brand-detail);color:#20221f}
+html[data-palette^="brand-"] .tag-dot,html[data-palette^="brand-"] .collection-status>span{background:var(--green)}
+html[data-palette^="brand-"] .ritual-copy{background:var(--panel)}
+html[data-palette^="brand-"] .pleasure-buttons button[aria-pressed=true]{background:var(--sage);border-color:var(--green)}
+html[data-palette^="brand-"] .campaign:after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,#eee6d6f5 0%,#eee6d6dc 25%,#eee6d691 43%,#eee6d615 64%,transparent 77%)}
+html[data-mode=dark][data-palette^="brand-"] .campaign:after{background:linear-gradient(90deg,#20221ff5 0%,#20221fd9 25%,#20221f8a 43%,#20221f15 64%,transparent 77%)}
+html[data-mode=dark][data-palette^="brand-"] .campaign h1>strong{color:var(--accent)}
+/* Brand choices lead; earlier explorations remain available behind one disclosure. */
+.brand-choice-list,.other-palette-options>div{display:grid;gap:10px}.brand-palette-tag{display:block;width:max-content;margin-top:5px;font:600 7px/1.3 Inter,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--green)}
+.palette-option{min-height:92px;padding:15px 14px}.palette-option-copy strong{line-height:1.25}.palette-option-copy small{font-size:10px;line-height:1.6}
+.other-palette-options{border-top:1px solid var(--line);margin-top:2px}.other-palette-options>summary,.palette-archive>summary{display:flex;align-items:center;justify-content:space-between;gap:20px;cursor:pointer;list-style:none;min-height:48px;font-size:12px;font-weight:500}.other-palette-options>summary::-webkit-details-marker,.palette-archive>summary::-webkit-details-marker{display:none}.other-palette-options>summary svg,.palette-archive>summary svg{width:17px;height:17px;flex-shrink:0}.other-palette-options[open]>summary svg,.palette-archive[open]>summary svg{transform:rotate(180deg)}
+.palette-archive{margin-bottom:30px}.palette-archive>summary{border-block:1px solid var(--line);margin-bottom:22px}.palette-archive>.palette-grid{padding-inline:0;width:100%}.palette-tokens{grid-template-columns:repeat(var(--token-count,4),minmax(0,1fr))}
+.palette-card[data-brand=true] .mini-copy{background:var(--sample-panel);color:var(--sample-ink)}
+.palette-card .mini-copy h2>span{color:var(--sample-story)}
+.palette-card[data-brand=true] .mini-cta,.palette-card[data-brand=true] .palette-description .button{background:var(--sample-primary)!important;border-color:var(--sample-primary)!important;color:#20221f!important}
+.palette-card[data-brand=true] .mini-bottom{background:var(--sample-soft);color:var(--sample-ink)}.palette-card[data-brand=true] .palette-description>p{min-height:70px}.colour-lead h1{font-size:clamp(42px,5vw,64px);line-height:1.08}
+/* A shorter mobile read, with the product information and Code still visible. */
+.home-collection .section-heading{margin-bottom:25px}.home-collection .item-topline{margin-top:14px}.home-collection .item-card h3{min-height:44px;display:flex;align-items:flex-start}.home-collection .item-meta{min-height:44px;display:flex;align-items:center}.home-collection .item-meta p,.home-collection .card-colours{margin:0}.home-collection .item-meta p{font-size:11px;line-height:1.6}.home-collection .items-grid{row-gap:27px}.home-collection .collection-bottom{padding-top:16px}
+.curated-kit-copy h2{margin:14px 0 17px}.curated-kit-copy p{margin-bottom:19px}.curated-kit-copy>small{margin-top:12px}
+.materials-disclosure>summary{gap:22px;padding:18px 0}.materials-thumb{display:block;flex-shrink:0;width:104px;height:82px;border-radius:4px;background:#20221f url('assets/editorial/mug.webp') no-repeat 15% 66%/680%}.materials-heading{flex:1}.materials-disclosure h2{font-size:26px;letter-spacing:-.035em;line-height:1.15;margin-top:8px}.materials-disclosure h2 br{display:block}.details-open-label>span{width:38px;height:38px}.materials-disclosure[open] .details-open-label svg{transform:rotate(45deg)}
+.refined-ritual .ritual-stage{min-height:420px}.refined-ritual .ritual-copy{padding-block:32px}.refined-ritual .ritual-copy h1,.refined-ritual .ritual-copy h2{margin:15px 0 19px}.refined-ritual .ritual-copy p{margin-bottom:12px}.refined-ritual .ritual-copy p:last-child{margin-bottom:0}
+.refined-ritual .ritual-datestamp{left:26px;top:26px;max-width:240px;font-size:18px;line-height:1.1;margin:0;padding:0;border-radius:0;background:transparent!important;color:#20221f}.refined-ritual [data-era=now] .ritual-datestamp{font-size:17px;color:#20221f;background:#eee6d6eb!important;padding:8px 10px;max-width:210px}.refined-ritual [data-era=then] .ritual-datestamp{color:var(--ink)}
+.refined-ritual .era-switch{bottom:20px;padding:3px}.refined-ritual .era-switch button{min-width:100px;padding:9px 17px;min-height:44px}
+.code-playbook{padding-top:31px;gap:40px}.everyday-perspective :is(h2,h3){font-family:Inter,sans-serif;font-size:20px;font-weight:550;text-transform:none;letter-spacing:-.035em;line-height:1.25;margin:0 0 15px}.pleasure-buttons{margin-top:0}.pleasure-buttons button{min-height:71px}.everyday-perspective .pleasure-note{margin-top:10px;padding-top:11px;min-height:51px}.code-rules-heading{margin-bottom:14px}.code-rules-heading :is(h2,h3){font-size:30px;margin-top:10px}.code-rule summary{min-height:64px;padding-block:12px}.code-rule summary .rule-toggle{width:29px;height:29px}
+.community-postcard-copy h2{font-size:42px;letter-spacing:-.045em}.community-postcard-copy h2>span{color:var(--story-accent,var(--green))}.community-postcard-copy{padding-block:34px}.community-postcard-copy h2{margin:15px 0 18px}.community-postcard-copy p{margin-bottom:18px}.curated-community .quiet-world-links{margin-top:20px;padding-top:14px}.quiet-world-art.cave-thumb{position:relative;overflow:visible}.cave-thumb-mark{position:absolute;right:-4px;bottom:0;display:grid;place-items:center;width:22px;height:22px;background:#20221f;border:2px solid var(--paper);border-radius:50%;padding:3px}.cave-thumb-mark img{width:100%;height:100%;object-fit:contain}.quiet-world-links .cave-invitation{display:block}
+.simple-footer{padding-block:28px 22px}.curated-footer-top{padding-bottom:20px}.curated-footer-top .brand-type{font-size:27px}.simple-footer-top{padding-top:20px}.simple-footer-logo{width:148px}.footer-more{margin:2px auto 13px}.footer-more>summary{display:flex;align-items:center;gap:16px;list-style:none;width:max-content;min-height:44px;font-size:12px;padding:8px 0}.footer-more>summary::-webkit-details-marker{display:none}.footer-more>summary>svg{width:16px;height:16px}.footer-more[open]>summary>svg{transform:rotate(180deg)}.footer-more>div{padding:2px 0 12px}.simple-footer .footer-bottom{padding-top:15px;gap:9px 20px}
+@media(hover:hover){html[data-palette^="brand-"] .button:not(.button-light):not(.button-cream):hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}html[data-palette^="brand-"] .campaign-code-link:hover{background:var(--panel);border-color:var(--green)}.palette-card[data-brand=true] .palette-description .button:hover{filter:brightness(1.06)}}
+@media(min-width:600px) and (max-width:999px){.code-playbook{gap:28px}.materials-thumb{width:85px;height:78px}.materials-disclosure h2{font-size:23px}.details-open-label{font-size:11px;gap:12px}.refined-ritual .ritual-stage{min-height:400px}.community-postcard-copy h2{font-size:36px}}
+@media(max-width:599px){
+ .campaign-copy{padding:22px 24px 19px}.campaign h1{font-size:47px;margin:15px 0 15px}.campaign h1>span{margin-bottom:6px}.campaign-copy p{font-size:14px;line-height:1.7;margin-bottom:20px}.campaign-actions{gap:8px}.campaign-code-link{min-height:44px}.campaign-copy .eyebrow{font-size:7.5px}.home-collection{padding-top:31px}.home-collection .section-heading h2,.home-collection .section-heading h2 strong{font-size:33px}.home-collection .section-heading>p{margin-top:12px;font-size:13px;line-height:1.7}.home-collection .section-heading{margin-bottom:23px}.home-collection .item-topline{margin-top:11px}.home-collection .item-card h3{font-size:13px;line-height:1.5;min-height:39px}.home-collection .item-meta{min-height:40px}.home-collection .item-meta p{font-size:10px}.home-collection .collection-bottom .collection-status{font-size:10px}.curated-kit{padding-top:24px;gap:20px}.curated-kit-copy h2{font-size:36px;margin:12px 0 14px}.curated-kit-copy p{font-size:14px;line-height:1.75;margin-bottom:17px}.curated-kit-copy>small{font-size:9px;margin-top:11px}
+ .home-product-details{padding-bottom:32px}.materials-disclosure>summary{padding:17px 0;gap:13px}.materials-thumb{width:69px;height:76px;background-size:680%}.materials-disclosure .eyebrow{font-size:6.5px;letter-spacing:.055em}.materials-disclosure h2{font-size:21px;line-height:1.1;margin-top:7px}.details-open-label>span{width:30px;height:30px}.details-open-label svg{width:14px;height:14px}
+ .refined-ritual .ritual-stage{min-height:0;aspect-ratio:1.1}.refined-ritual .ritual-datestamp{left:20px;top:22px;font-size:15px;max-width:230px}.refined-ritual [data-era=now] .ritual-datestamp{font-size:14px;max-width:185px;left:15px;top:16px;padding:7px 9px}.refined-ritual .era-switch{bottom:15px}.refined-ritual .era-switch button{font-size:11px;min-width:96px;padding:8px 16px}.refined-ritual .ritual-copy{padding:24px}.refined-ritual .ritual-copy h1,.refined-ritual .ritual-copy h2{font-size:35px;margin:14px 0 18px}.refined-ritual .ritual-copy p{font-size:14px;line-height:1.75;margin-bottom:12px}
+ .code-playbook{padding-top:26px;gap:24px}.everyday-perspective :is(h2,h3){font-size:21px;margin-bottom:12px}.pleasure-buttons{gap:4px}.pleasure-buttons button{min-height:68px;padding:8px 3px;font-size:10px;gap:8px}.pleasure-buttons svg{width:25px;height:25px}.everyday-perspective .pleasure-note{font-size:12px;line-height:1.65;min-height:48px;margin-top:10px;padding-top:11px}.code-rules-heading{margin-bottom:12px}.code-rules-heading :is(h2,h3){font-size:30px;margin-top:9px}.code-rule summary{font-size:14px;min-height:60px;padding-block:11px}.home-product-details+.curated-code{padding-bottom:35px}
+ .community-postcard-copy{padding:25px 24px}.community-postcard-copy h2{font-size:35px;margin:14px 0 17px}.community-postcard-copy p{font-size:14px;line-height:1.75;margin-bottom:18px}.curated-community{padding-bottom:35px}.curated-community .quiet-world-links{gap:9px;margin-top:18px;padding-top:10px}.curated-community .quiet-world-links>a{min-height:83px}.curated-community .quiet-world-art{width:48px;height:57px}.curated-community .quiet-world-links strong{font-size:13px}.curated-community .quiet-world-links small{font-size:11px}.cave-thumb-mark{width:19px;height:19px;padding:2px;right:-5px}
+ .simple-footer{padding-block:25px 20px}.curated-footer-top{display:flex;align-items:flex-start;gap:20px;padding-bottom:20px}.curated-footer-top .brand-type{font-size:23px;flex:1}.curated-footer-top p{margin:0;max-width:145px;font-size:10px;line-height:1.7}.simple-footer-top{padding-top:20px}.simple-footer-logo{width:132px;margin-bottom:10px}.simple-footer-top nav{gap:14px}.footer-more{margin:0 auto 10px}.footer-more>summary{font-size:11px;gap:11px}.simple-footer .footer-bottom{gap:7px 15px;padding-top:12px}.simple-footer .footer-bottom .secret-button{width:38px;height:38px}
+ .brand-palette-tag{font-size:6.5px;margin-top:4px}.palette-option{padding:13px 11px;gap:11px;min-height:94px}.palette-option strong{font-size:14px}.palette-option small{font-size:10px;line-height:1.55}.palette-option .palette-swatches i{width:9px;height:27px}.palette-options{gap:10px;margin-bottom:16px}.other-palette-options>summary{font-size:11px}.palette-tokens{gap:7px}.palette-tokens small{font-size:7px}.palette-tokens strong{font-size:8px}.palette-card[data-brand=true] .palette-description>p{min-height:0}.colour-lead h1{font-size:42px}.palette-archive>summary{font-size:12px}.palette-archive{margin-bottom:20px}.colour-lead p{font-size:13px}
+ html[data-palette^="brand-"] .campaign:after{display:none}
+}
+@media(max-width:359px){.campaign-copy{padding-inline:20px}.campaign h1{font-size:42px}.campaign-copy p{font-size:13px}.home-collection .section-heading h2,.home-collection .section-heading h2 strong{font-size:29px}.materials-thumb{width:54px;height:71px}.materials-disclosure h2{font-size:18px}.materials-disclosure .eyebrow{font-size:5.8px}.materials-disclosure>summary{gap:10px}.details-open-label>span{width:27px;height:27px}.refined-ritual .ritual-datestamp{font-size:13px;max-width:220px;left:17px}.refined-ritual .ritual-copy{padding:23px 20px}.refined-ritual .ritual-copy h1,.refined-ritual .ritual-copy h2{font-size:31px}.refined-ritual .ritual-copy p{font-size:13px}.curated-footer-top{gap:14px}.curated-footer-top .brand-type{font-size:21px}.curated-footer-top p{max-width:122px;font-size:9px}.palette-option{gap:9px}.palette-option strong{font-size:13px}.palette-option .palette-swatches i{width:7px}.community-postcard-copy h2{font-size:32px}}
+/* Keep the CAVE badge outside the thumbnail without exposing the tall source image. */
+.quiet-world-art.cave-thumb>img{position:absolute;inset:0;width:100%;height:100%;min-height:0;object-fit:contain;padding:4px}
+.palette-card[data-brand=false] .palette-description .button{background:var(--sample-primary)!important;border-color:var(--sample-primary)!important;color:var(--sample-paper)!important}
+@media(max-width:599px){.curated-footer-top p{font-size:11px;max-width:148px}.simple-footer-top nav>a,.footer-more>summary,.footer-more a{font-size:12px}.simple-footer .footer-bottom>a,.simple-footer .footer-bottom>span:first-child,.simple-footer .footer-bottom>span:nth-child(2){font-size:10px}}
+@media(max-width:359px){.curated-footer-top p{font-size:10px;max-width:128px}.simple-footer-top nav{gap:12px}.simple-footer-top nav>a{font-size:11px}}
+
+/* v17 — charcoal leads; the chosen accent has a clear, limited role. */
+html[data-mode=dark][data-palette^="brand-"] .campaign{background:var(--paper)}
+.palette-used-colours{display:block;font-size:10px;line-height:1.5;color:var(--muted);margin-top:7px}
+.palette-option .palette-swatches{width:45px;flex-shrink:0;display:flex;overflow:hidden}
+.palette-option .palette-swatches i{flex:1;width:auto!important;min-width:0}
+.palette-option .palette-swatches i:first-child{flex:1.7}
+.palette-toggle .palette-swatches{width:30px;display:flex;overflow:hidden}
+.palette-toggle .palette-swatches i{flex:1;width:auto;min-width:0}
+.palette-toggle .palette-swatches i:first-child{flex:1.7}
+.palette-mini .mini-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mini-stamp{font-size:7px;letter-spacing:.04em;padding:6px 7px;border-radius:3px;background:var(--sample-secondary);color:#20221f;flex-shrink:0;font-weight:700}
+.palette-card[data-brand=false] .mini-stamp{background:var(--sample-primary);color:var(--sample-paper)}
+.kit-stamp{top:17px;left:17px;width:auto;height:auto;min-width:87px;padding:11px 12px 12px;border-radius:4px;transform:rotate(-4deg);font-family:Inter,sans-serif;gap:5px;align-items:flex-start;text-align:left;box-shadow:0 1px 4px #20221f14}
+.kit-stamp small{font-size:8px;font-weight:500;letter-spacing:.12em;line-height:1.2}
+.kit-stamp strong{font-size:12px;font-weight:800;letter-spacing:0;line-height:1.12}
+.code-section-heading{padding:0 0 24px}
+.code-section-heading .code-title{font-family:Boogas,Inter,sans-serif;font-weight:400;font-size:clamp(36px,4.1vw,58px);letter-spacing:.025em;word-spacing:.025em;font-kerning:none;font-feature-settings:"kern" 0,"liga" 0;line-height:1.13;margin:0}
+.code-title span{white-space:nowrap}
+.refined-ritual .ritual-copy .code-belief{font-size:clamp(29px,3.2vw,43px);font-weight:450;letter-spacing:-.035em;line-height:1.15;color:var(--ink);margin:0 0 23px}
+.code-belief em{font-family:Georgia,serif;font-weight:400;letter-spacing:-.03em;color:var(--accent)}
+.code-rules-heading :is(h2,h3){font-family:Inter,sans-serif;font-size:21px;font-weight:550;letter-spacing:-.03em;line-height:1.25;text-transform:none;margin:0}
+.world-invitation{display:flex;align-items:center;gap:18px;padding:16px 18px 16px 16px;margin-top:18px;border:1px solid var(--line);border-radius:6px;background:var(--paper);transition:border-color .2s,background .2s}
+.world-invitation-art{display:block;width:75px;height:75px;overflow:hidden;flex-shrink:0;border-radius:4px;background:#276ca3}
+.world-invitation-art img{width:100%;height:100%;object-fit:cover;transform:scale(1.18)}
+.world-invitation-copy{flex:1;min-width:0}
+.world-invitation-copy small{display:block;color:var(--muted);font-size:8px;line-height:1.5;letter-spacing:.09em;margin-bottom:8px}
+.world-invitation-copy strong{font-size:19px;font-weight:550;letter-spacing:-.025em;line-height:1.35}
+.world-invitation-arrow{display:grid;place-items:center;width:37px;height:37px;flex-shrink:0;border:1px solid var(--line);border-radius:50%;color:var(--green)}
+.world-invitation-arrow svg{width:20px;height:20px}
+.curated-community .quiet-world-links{margin-top:19px}
+@media(hover:hover){.world-invitation:hover{border-color:var(--green);background:var(--panel)}.world-invitation:hover .world-invitation-arrow{background:var(--green);border-color:var(--green);color:var(--button-text)}.curated-kit-art:hover .kit-stamp{transform:rotate(0)}}
+@media(max-width:599px){
+ .palette-option{min-height:101px;padding:12px}
+ .palette-used-colours{font-size:9px;margin-top:5px}
+ .palette-option .palette-swatches{width:43px}
+ .kit-stamp{top:14px;left:14px;min-width:75px;padding:9px 10px;gap:4px}
+ .kit-stamp small{font-size:7px}.kit-stamp strong{font-size:10px}
+ .code-section-heading{padding-bottom:19px}
+ .code-section-heading .code-title{font-size:clamp(28px,9.1vw,40px);letter-spacing:.018em;word-spacing:0;line-height:1.15}
+ .refined-ritual .ritual-copy .code-belief{font-size:29px;line-height:1.13;margin:0 0 19px}
+ .refined-ritual .ritual-copy{padding-block:24px}
+ .code-rules-heading :is(h2,h3){font-size:21px;margin:0}
+ .world-invitation{gap:13px;padding:11px;margin-top:16px}
+ .world-invitation-art{width:61px;height:66px}
+ .world-invitation-copy small{font-size:8px;letter-spacing:.06em;margin-bottom:5px}
+ .world-invitation-copy strong{font-size:14px}
+ .world-invitation-arrow{width:29px;height:29px}.world-invitation-arrow svg{width:16px;height:16px}
+ .curated-community .quiet-world-links{margin-top:16px}
+}
+@media(max-width:359px){
+ .palette-option .palette-swatches{width:35px}
+ .world-invitation{gap:10px;padding:9px}.world-invitation-art{width:50px;height:60px}
+ .world-invitation-copy strong{font-size:13px}.world-invitation-arrow{width:26px;height:26px}
+ .refined-ritual .ritual-copy .code-belief{font-size:26px}
+}
+
+/* A solid, quiet bar; mobile reading is uninterrupted on downward scroll. */
+.header{background:var(--paper);backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom-color:color-mix(in srgb,var(--line) 65%,transparent);box-shadow:none}
+@media(max-width:599px){
+ .header{transition:transform 180ms ease;transform:translateY(0)}
+ .header.header-away{transform:translateY(calc(-100% - 1px))}
+}
+@media(prefers-reduced-motion:reduce){.header{transition:none}}
+
+/* v18 — introduce the community before its artwork; show the mug face clearly. */
+.curated-community{padding-top:38px}
+.community-postcard{grid-template-columns:1fr 1.12fr;grid-template-areas:"heading art" "copy art"}
+.community-postcard-heading{grid-area:heading;align-self:end;padding:36px clamp(28px,4vw,60px) 0}
+.community-postcard-heading>.eyebrow{font-size:9px}
+.community-postcard-heading h2{font-size:42px;line-height:1.12;letter-spacing:-.045em;margin:15px 0 0}
+.community-postcard-heading h2>span{color:var(--story-accent,var(--green))}
+.community-postcard-art{grid-area:art}
+.community-postcard-copy{grid-area:copy;align-self:start;justify-content:flex-start;padding-top:20px}
+.materials-thumb{width:112px;height:94px;background-image:url('assets/refined/mug-front-v18.webp');background-size:420%;background-position:14% 72%}
+.mug-detail-content .mug-macro{height:auto;aspect-ratio:1.25}
+@media(min-width:600px) and (max-width:999px){
+ .community-postcard-heading{padding:30px 27px 0}.community-postcard-heading h2{font-size:36px}
+ .materials-thumb{width:93px;height:90px}
+}
+@media(max-width:599px){
+ .curated-community{padding-top:26px}
+ .community-postcard{grid-template-columns:1fr;grid-template-areas:"heading" "art" "copy"}
+ .community-postcard-heading{padding:25px 24px 24px}
+ .community-postcard-heading>.eyebrow{font-size:8px}
+ .community-postcard-heading h2{font-size:35px;margin-top:14px}
+ .community-postcard-copy{padding-top:22px}
+ .materials-thumb{width:82px;height:88px;background-size:420%}
+ .materials-disclosure h2{font-size:20px}
+ .mug-detail-options{display:flex;gap:7px}
+ .mug-detail-options button{flex:1 1 29%;min-width:85px}
+}
+@media(max-width:359px){
+ .community-postcard-heading{padding-inline:20px}.community-postcard-heading h2{font-size:32px}
+ .materials-thumb{width:64px;height:76px}.materials-disclosure h2{font-size:18px}
+}

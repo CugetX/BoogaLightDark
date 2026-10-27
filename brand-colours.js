@@ -1,0 +1,12 @@
+// Swatches describe each applied theme. Supporting tints are derived in CSS.
+export const brandFamilies = [
+  {id:'brand-moss',brand:true,
+    day:{name:'Moss & Stone',mood:'Warm stone. Fresh moss. A quiet signature.',note:'The daytime signature. Stone gives the photography room; moss marks the actions, with charcoal for clear lettering.',colours:['#EEE6D6','#9FC17C','#20221F'],labels:['Stone','Moss','Charcoal'],soft:'#DFE5CE',panel:'#E5E4D4',textAccent:'#405A32',ink:'#20221F',secondary:'#9FC17C'},
+    night:{name:'Charcoal & Moss',mood:'The original BOOGAS spirit. Our signature pick.',note:'Our strongest brand direction. A true charcoal base, moss controls and warm stone lettering. The artwork supplies the other colours.',colours:['#20221F','#9FC17C','#EEE6D6'],labels:['Charcoal','Moss','Stone'],soft:'#292C27',panel:'#262825',ink:'#EEE6D6',secondary:'#9FC17C'}},
+  {id:'brand-ochre',brand:true,
+    day:{name:'Ochre & Charcoal',mood:'A warmer, more graphic daytime alternative.',note:'Stone and charcoal with one ochre accent. A warm alternative for the shop, without introducing another green or pink into the interface.',colours:['#EEE6D6','#D0A843','#20221F'],labels:['Stone','Ochre','Charcoal'],soft:'#E9DDBD',panel:'#E9E0C9',textAccent:'#6D521A',ink:'#20221F',secondary:'#D0A843'},
+    night:{name:'Moss & Ochre',mood:'Charcoal and moss, with a small golden accent.',note:'The same charcoal base and moss controls. Ochre appears only in the kit stamp and selected story details—a little warmth, without taking over.',colours:['#20221F','#9FC17C','#EEE6D6','#D0A843'],labels:['Charcoal','Moss','Stone','Ochre'],soft:'#292C27',panel:'#262825',ink:'#EEE6D6',secondary:'#D0A843'}},
+  {id:'brand-rose',brand:true,
+    day:{name:'Rose & Moss',mood:'Soft rose panels, with familiar moss controls.',note:'Rose warms the story panels; moss leads the actions. A playful seasonal direction, supported by stone and charcoal.',colours:['#EEE6D6','#9FC17C','#20221F','#EFA7BB'],labels:['Stone','Moss','Charcoal','Rose'],soft:'#EBD2CF',panel:'#ECDED4',textAccent:'#405A32',ink:'#20221F',secondary:'#EFA7BB'},
+    night:{name:'Moss & Rose',mood:'Charcoal and moss, with a little unexpected pink.',note:'The same charcoal base and moss controls, with a small rose accent in the kit stamp and story details. The most playful of the three dark studies.',colours:['#20221F','#9FC17C','#EEE6D6','#EFA7BB'],labels:['Charcoal','Moss','Stone','Rose'],soft:'#292C27',panel:'#262825',ink:'#EEE6D6',secondary:'#EFA7BB'}}
+];

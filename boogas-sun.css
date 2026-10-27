@@ -1,0 +1,348 @@
+/* Studio-grade Boogas World header stage:
+   Clean editorial header architecture with a hand-inked scenic horizon stage
+   featuring the actual rigged Nomad puppet, sun/moon, and campfire. */
+
+.header {
+  --header: 88px;
+  height: var(--header);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  overflow: hidden;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  gap: 32px;
+  background: color-mix(in srgb, var(--paper) 96%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1.5px solid color-mix(in srgb, var(--line) 78%, var(--ink) 22%);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Keep brand, navigation, and right-side tools crisp in the foreground */
+.header > .brand,
+.header > .main-nav,
+.header > .header-tools,
+.header > .mobile-menu {
+  position: relative;
+  z-index: 3;
+}
+
+.header > .main-nav {
+  justify-self: start;
+  margin-left: 12px;
+}
+
+/* Scenic stage layer inside the header */
+.boogas-header-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.boogas-world-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: none;
+  overflow: hidden;
+}
+
+.boogas-world-svg image {
+  image-rendering: auto;
+}
+
+/* Interactive hit zones inside the header SVG */
+.boogas-world-svg .bw-stage-hit {
+  pointer-events: all;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.boogas-world-svg .bw-orb {
+  pointer-events: all;
+  cursor: grab;
+  transform-origin: 0 0;
+  will-change: transform;
+  touch-action: none;
+}
+
+.boogas-world-svg .bw-nomad,
+.boogas-world-svg .bw-campfire {
+  pointer-events: all;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.header[data-sun-dragging="true"],
+.header[data-sun-dragging="true"] .boogas-world-svg .bw-orb,
+.header[data-sun-dragging="true"] .boogas-world-svg .bw-stage-hit {
+  cursor: grabbing;
+}
+
+/* Clean editorial "Day / Night" switch in .header-tools */
+.boogas-sun-control {
+  position: relative;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--line) 80%, var(--ink) 20%);
+  background: color-mix(in srgb, var(--panel) 65%, var(--paper) 35%);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 180ms ease, background-color 180ms ease, transform 150ms ease;
+}
+
+.boogas-sun-control:hover {
+  border-color: var(--green);
+  background: var(--panel);
+}
+
+.boogas-sun-control:focus-visible {
+  outline: 3px solid var(--focus, #405a32);
+  outline-offset: 3px;
+}
+
+.boogas-sun-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffd46c;
+  border: 1.2px solid #20221f;
+  box-shadow: 0 0 0 2px rgba(255, 212, 108, 0.25);
+  transition: background-color 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  flex-shrink: 0;
+}
+
+html[data-mode="dark"] .boogas-sun-dot {
+  background: #eee6d6;
+  border-color: #9fc17c;
+  box-shadow: 0 0 6px rgba(238, 230, 214, 0.45);
+}
+
+html[data-dusk-active="true"] .boogas-sun-dot {
+  background: #ff9e44;
+  border-color: #20221f;
+  box-shadow: 0 0 8px rgba(255, 158, 68, 0.65);
+}
+
+/* Visible "Day / Night" label */
+.boogas-sun-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 11.5px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.boogas-label-day,
+.boogas-label-night {
+  transition: color 180ms ease, opacity 180ms ease, font-weight 180ms ease;
+}
+
+.boogas-label-slash {
+  color: var(--muted);
+  opacity: 0.55;
+  font-weight: 400;
+}
+
+html:not([data-mode="dark"]) .boogas-label-day {
+  color: var(--ink);
+  font-weight: 650;
+  opacity: 1;
+}
+
+html:not([data-mode="dark"]) .boogas-label-night {
+  color: var(--muted);
+  font-weight: 450;
+  opacity: 0.72;
+}
+
+html[data-mode="dark"] .boogas-label-day {
+  color: var(--muted);
+  font-weight: 450;
+  opacity: 0.72;
+}
+
+html[data-mode="dark"] .boogas-label-night {
+  color: var(--ink);
+  font-weight: 650;
+  opacity: 1;
+}
+
+html[data-dusk-active="true"] .boogas-label-day,
+html[data-dusk-active="true"] .boogas-label-night {
+  color: var(--ink);
+  opacity: 0.92;
+}
+
+/* Hand-crafted ambient animations inside the header vignette */
+@keyframes bwFlameFlicker {
+  0%, 100% { transform: scale(1, 1) rotate(-1deg); }
+  35% { transform: scale(0.94, 1.08) rotate(2deg); }
+  70% { transform: scale(1.05, 0.94) rotate(-2deg); }
+}
+
+@keyframes bwEmberRise1 {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.95; }
+  100% { transform: translate(-2px, -7px) scale(0.35); opacity: 0; }
+}
+
+@keyframes bwEmberRise2 {
+  0% { transform: translate(0, 0) scale(0.9); opacity: 0.85; }
+  100% { transform: translate(2.2px, -8px) scale(0.3); opacity: 0; }
+}
+
+@keyframes bwStarTwinkle {
+  0%, 100% { opacity: 0.95; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.82); }
+}
+
+@keyframes bwSunRaysSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.boogas-world-svg .bw-flame-outer {
+  transform-origin: 0px 0px;
+  animation: bwFlameFlicker 1.1s ease-in-out infinite;
+}
+
+.boogas-world-svg .bw-flame-inner {
+  transform-origin: 0px 0px;
+  animation: bwFlameFlicker 0.8s ease-in-out infinite reverse;
+}
+
+.boogas-world-svg .bw-ember-1 {
+  animation: bwEmberRise1 1.35s ease-out infinite;
+}
+
+.boogas-world-svg .bw-ember-2 {
+  animation: bwEmberRise2 1.65s ease-out 0.5s infinite;
+}
+
+.boogas-world-svg .bw-star-twinkle-1 {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bwStarTwinkle 2.4s ease-in-out infinite;
+}
+
+.boogas-world-svg .bw-star-twinkle-2 {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bwStarTwinkle 3.1s ease-in-out 1.1s infinite;
+}
+
+.boogas-world-svg .bw-sun-rays {
+  transform-origin: 0px 0px;
+  animation: bwSunRaysSpin 32s linear infinite;
+}
+
+/* Smooth warm dusk hero & surface blending */
+html[data-dusk-active="true"] body,
+html[data-dusk-active="true"] .header,
+html[data-dusk-active="true"] .top-note,
+html[data-dusk-active="true"] .campaign,
+html[data-dusk-active="true"] .ritual-copy,
+html[data-dusk-active="true"] .community-postcard {
+  transition: none !important;
+}
+
+html[data-palette^="brand-"] .campaign:after,
+html[data-mode="dark"][data-palette^="brand-"] .campaign:after {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--paper) 96%, transparent) 0%,
+    color-mix(in srgb, var(--paper) 86%, transparent) 25%,
+    color-mix(in srgb, var(--paper) 56%, transparent) 43%,
+    color-mix(in srgb, var(--paper) 8%, transparent) 64%,
+    transparent 77%
+  );
+}
+
+/* Responsive layout for tablet and mobile headers */
+@media (max-width: 1150px) {
+  .header {
+    gap: 18px;
+  }
+  .header > .main-nav {
+    margin-left: 0;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 899px) {
+  .header {
+    --header: 76px;
+    grid-template-columns: auto 1fr auto;
+    gap: 14px;
+  }
+  .boogas-sun-control {
+    min-height: 32px;
+    padding: 4px 10px;
+    gap: 5px;
+  }
+  .boogas-sun-label {
+    font-size: 10.5px;
+  }
+}
+
+@media (max-width: 599px) {
+  .header {
+    --header: 68px;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 56px;
+  }
+  .header-tools {
+    gap: 6px;
+  }
+  .boogas-sun-control {
+    min-height: 30px;
+    padding: 3px 8px;
+    gap: 4px;
+  }
+  .boogas-sun-dot {
+    width: 6px;
+    height: 6px;
+  }
+  .boogas-sun-label {
+    font-size: 9.5px;
+    gap: 2px;
+  }
+}
+
+@media (max-width: 359px) {
+  .boogas-sun-control {
+    min-height: 28px;
+    padding: 2px 6px;
+  }
+  .boogas-sun-label {
+    font-size: 8.5px;
+  }
+}
+
+/* Reduced motion: instant state switch, no continuous animations */
+@media (prefers-reduced-motion: reduce) {
+  .boogas-sun-control,
+  .boogas-label-day,
+  .boogas-label-night,
+  .boogas-world-svg * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

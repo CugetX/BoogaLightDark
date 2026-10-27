@@ -1,0 +1,14 @@
+/* New BOOGAS after-dark directions. Day palettes retain their original identity. */
+:root[data-mode=dark][data-palette=cave]{--paper:#10120f;--white:#1b1d18;--ink:#f3f2e9;--green:#a9c77e;--muted:#b7bdad;--line:#3b4431;--sage:#29341f;--panel:#1c2218;--accent:#b7d88e;--footer:#090b08;--on-dark:#f3f2e9;--muted-dark:#aeb8a2;--focus:#e4ce83;--button-text:#15200f}
+:root[data-mode=dark][data-palette=lagoon]{--paper:#081a1c;--white:#10292b;--ink:#edf5ee;--green:#77d6bc;--muted:#a4c4bd;--line:#30514c;--sage:#173e37;--panel:#102d2a;--accent:#77d6bc;--footer:#061210;--on-dark:#edf5ee;--muted-dark:#a4c4bd;--focus:#f0c989;--button-text:#07281e}
+:root[data-mode=dark][data-palette=volcanic]{--paper:#1a101b;--white:#291b29;--ink:#faeee5;--green:#e8aa86;--muted:#cab3c3;--line:#544050;--sage:#442c40;--panel:#2a1c2a;--accent:#e8aa86;--footer:#100b13;--on-dark:#faeee5;--muted-dark:#cab3c3;--focus:#c4dc8e;--button-text:#2b1722}
+.appearance-modes button{gap:8px}.appearance-modes button>small{font-size:7px;letter-spacing:.04em;border:1px solid currentColor;border-radius:3px;padding:3px 4px;line-height:1}
+.new-palette-tag{display:inline-block;vertical-align:middle;font-size:7px;font-weight:600;letter-spacing:.06em;padding:3px 5px;margin-left:8px;border:1px solid var(--line);border-radius:3px;color:var(--green);line-height:1}
+html[data-mode=dark] .campaign-code-link{background:color-mix(in srgb,var(--paper) 86%,transparent);border-color:var(--line);color:var(--ink)}
+html[data-mode=dark][data-palette=cave] .campaign:after{background:linear-gradient(90deg,#10120ff5 0%,#10120fc7 27%,#10120f77 43%,#10120f12 62%,transparent 76%)}
+html[data-mode=dark][data-palette=lagoon] .campaign:after{background:linear-gradient(90deg,#081a1cf2 0%,#081a1cc2 27%,#081a1c73 43%,#081a1c12 62%,transparent 76%)}
+html[data-mode=dark][data-palette=volcanic] .campaign:after{background:linear-gradient(90deg,#1a101bf2 0%,#1a101bc2 27%,#1a101b73 43%,#1a101b12 62%,transparent 76%)}
+html[data-mode=dark]:is([data-palette=cave],[data-palette=lagoon],[data-palette=volcanic]) .campaign h1>strong{color:var(--green)}
+html[data-mode=dark]:is([data-palette=cave],[data-palette=lagoon],[data-palette=volcanic]) .home-collection .brand-type{color:var(--ink)}
+@media(hover:hover){html[data-mode=dark] .campaign-code-link:hover{background:var(--panel);border-color:var(--green)}}
+@media(max-width:599px){.appearance-modes button{padding-inline:13px;gap:7px}.appearance-modes button>small{font-size:6px}.new-palette-tag{font-size:6px;margin-left:6px}.palette-option-copy strong{line-height:1.4}}

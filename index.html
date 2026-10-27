@@ -1,0 +1,1280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#EEE6D6">
+  <title>Boogas — Drag the Sun</title>
+  <link rel="preload" as="image" href="assets/boogas-logo.webp">
+  <link rel="preload" as="image" href="assets/fireplace-sheet.webp">
+  <style>
+    @font-face {
+      font-family: Boogas;
+      src: url('assets/boogas.otf');
+      font-display: swap;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Arial, sans-serif;
+      --paper: #eee6d6;
+      --ink: #20221f;
+      --green: #91b56c;
+      --line: #20221f30;
+      --soft: #20221f99;
+      --panel: #e3d8c0;
+      --logo: brightness(0);
+      transition: background-color 0.08s linear, color 0.08s linear;
+    }
+
+    button, input {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    .header-stage:focus-visible {
+      outline: 3px solid #b78d29;
+      outline-offset: 5px;
+    }
+
+    header {
+      max-width: 1100px;
+      margin: auto;
+      padding: 0 32px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      z-index: 5;
+      gap: 20px;
+    }
+
+    .brand-logo {
+      width: 133px;
+      filter: var(--logo, brightness(0));
+      margin-bottom: 18px;
+      flex-shrink: 0;
+    }
+
+    .header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .edition {
+      font: 11px monospace;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      line-height: 1.35;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+
+    /* Interactive Top-Right Boogas Campfire & Sky Header Stage */
+    .header-stage {
+      position: relative;
+      width: 142px;
+      height: 108px;
+      margin-top: -22px;
+      margin-right: -26px;
+      cursor: pointer;
+      user-select: none;
+      touch-action: none;
+      flex-shrink: 0;
+    }
+
+    .header-stage.dragging {
+      cursor: grabbing;
+    }
+
+    .stage-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    /* Animated Fireplace Canvas layered directly on the mossy stone ledge */
+    .fireplace-canvas {
+      position: absolute;
+      left: 75px;
+      top: 53.5px;
+      width: 29px;
+      height: 48px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    main {
+      max-width: 960px;
+      margin: auto;
+      padding: 85px 28px 28px;
+    }
+
+    .eyebrow {
+      font: 11px monospace;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--soft);
+    }
+
+    h1 {
+      font-family: Boogas, Arial, sans-serif;
+      font-weight: 400;
+      font-size: clamp(42px, 7vw, 70px);
+      letter-spacing: -3.5px;
+      line-height: 1;
+      margin: 15px 0 17px;
+      max-width: 700px;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    .intro {
+      color: var(--soft);
+      font-size: 15px;
+      max-width: 520px;
+      margin-bottom: 28px;
+    }
+
+    .preview {
+      margin-top: 70px;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 32px;
+      align-items: center;
+      padding: 30px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .preview h2 {
+      font-size: 24px;
+      letter-spacing: -0.8px;
+      margin: 8px 0;
+    }
+
+    .preview p {
+      font-size: 13px;
+      color: var(--soft);
+      margin: 0;
+    }
+
+    .sample {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      padding: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .sample strong {
+      color: var(--green);
+      font-size: 26px;
+      letter-spacing: -1.2px;
+    }
+
+    .sample span {
+      background: #fdc543;
+      color: #20221f;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      padding: 12px 13px;
+      white-space: nowrap;
+    }
+
+    footer {
+      font: 11px monospace;
+      color: var(--soft);
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 20px 0;
+      line-height: 1.6;
+    }
+
+    .sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+
+    @media (max-width: 680px) {
+      header {
+        padding: 0 18px;
+      }
+      header .edition {
+        display: none;
+      }
+      .brand-logo {
+        width: 112px;
+        margin-bottom: 14px;
+      }
+      .header-stage {
+        width: 130px;
+        height: 99px;
+        margin-top: -20px;
+        margin-right: -8px;
+      }
+      .fireplace-canvas {
+        left: 69px;
+        top: 49px;
+        width: 26.5px;
+        height: 44px;
+      }
+      main {
+        padding: 65px 18px 18px;
+      }
+      h1 {
+        font-size: 45px;
+        letter-spacing: -1px;
+      }
+      .intro {
+        font-size: 14px;
+      }
+      .preview {
+        margin-top: 40px;
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .sample {
+        padding: 20px;
+      }
+      footer {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img class="brand-logo" src="assets/boogas-logo.webp" alt="Boogas">
+    <div class="header-right">
+      <div class="edition">Little moments.<br>Big joy.</div>
+
+      <!-- Interactive Boogas Header Scene: Sitting Booga on Land + Bonfire + Pure SVG Sun & Animations Moon -->
+      <div id="header-stage" class="header-stage" role="button" tabindex="0" aria-label="Boogas day and night sky control. Tap to make Nomad hit the sun or moon into orbit.">
+        <svg class="stage-svg" id="stage-svg" viewBox="0 0 142 108" aria-hidden="true">
+          <defs>
+            <!-- Clip path aligned flush with the bottom of the header so the orb sets cleanly behind the land -->
+            <clipPath id="skyStageClip">
+              <rect x="-30" y="-80" width="202" height="188"/>
+            </clipPath>
+
+            <!-- Ambient Day / Golden Hour / Night Sky Backdrop Glows -->
+            <radialGradient id="daySkyAura" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fff4c2" stop-opacity="0.55"/>
+              <stop offset="55%" stop-color="#ffd97d" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#eee6d6" stop-opacity="0"/>
+            </radialGradient>
+
+            <radialGradient id="duskSkyAura" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ff9a44" stop-opacity="0.52"/>
+              <stop offset="58%" stop-color="#e05a36" stop-opacity="0.16"/>
+              <stop offset="100%" stop-color="#20221f" stop-opacity="0"/>
+            </radialGradient>
+
+            <radialGradient id="nightSkyAura" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#2b3566" stop-opacity="0.55"/>
+              <stop offset="58%" stop-color="#1d2238" stop-opacity="0.22"/>
+              <stop offset="100%" stop-color="#20221f" stop-opacity="0"/>
+            </radialGradient>
+
+            <!-- PURE SVG LINELESS SUN GRADIENTS (Exact 2D linear-gradient + soft bloom formula matching Symbol 8 Moon) -->
+            <radialGradient id="sunOuterBloom" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ffc83b" stop-opacity="0.50"/>
+              <stop offset="45%" stop-color="#ff9a24" stop-opacity="0.20"/>
+              <stop offset="78%" stop-color="#ff7b18" stop-opacity="0.06"/>
+              <stop offset="100%" stop-color="#ff6200" stop-opacity="0"/>
+            </radialGradient>
+
+            <linearGradient id="sunFillGrad" x1="18%" y1="14%" x2="84%" y2="86%">
+              <stop offset="0%" stop-color="#FFF275"/>
+              <stop offset="48%" stop-color="#FFB929"/>
+              <stop offset="100%" stop-color="#FF7619"/>
+            </linearGradient>
+
+            <!-- ANIMATIONS FOLDER MOON & STARS GRADIENTS (Exact Symbol 8 from DesertBG - Living Loop.fla) -->
+            <!-- Crescent-shaped soft blur filter so moonlight radiates from the crescent itself with NO dot in the hollow center -->
+            <filter id="moonCrescentGlow" x="-70%" y="-70%" width="240%" height="240%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="11" result="moonBlur"/>
+              <feComponentTransfer in="moonBlur" result="softMoonBlur">
+                <feFuncA type="linear" slope="0.52"/>
+              </feComponentTransfer>
+              <feMerge>
+                <feMergeNode in="softMoonBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+
+            <linearGradient id="animMoonFill" x1="18%" y1="82%" x2="84%" y2="14%">
+              <stop offset="0%" stop-color="#525CC7"/>
+              <stop offset="22%" stop-color="#525CC7"/>
+              <stop offset="100%" stop-color="#ADEEFF"/>
+            </linearGradient>
+
+            <filter id="starGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="0.45" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+
+            <!-- Warm Bonfire Light Pool on Land & Booga at Night -->
+            <radialGradient id="fireGroundGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ff9d3b" stop-opacity="0.72"/>
+              <stop offset="48%" stop-color="#ff651c" stop-opacity="0.34"/>
+              <stop offset="100%" stop-color="#ff4500" stop-opacity="0"/>
+            </radialGradient>
+
+            <!-- Lineless Mossy Stone Ledge Gradients (using webpage green #91b56c + faceted warm stone, interpolated Day/Night) -->
+            <linearGradient id="landGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop id="land-stop-0" offset="0%" stop-color="#96b970"/>
+              <stop id="land-stop-1" offset="58%" stop-color="#87ab62"/>
+              <stop id="land-stop-2" offset="100%" stop-color="#749750"/>
+            </linearGradient>
+
+            <linearGradient id="rockBaseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop id="rock-stop-0" offset="0%" stop-color="#9e8f80"/>
+              <stop id="rock-stop-1" offset="100%" stop-color="#847567"/>
+            </linearGradient>
+          </defs>
+
+          <g clip-path="url(#skyStageClip)">
+            <!-- 1. SKY AMBIENT AURAS -->
+            <ellipse id="sky-day-aura" cx="71" cy="54" rx="64" ry="40" fill="url(#daySkyAura)"/>
+            <ellipse id="sky-dusk-aura" cx="71" cy="68" rx="68" ry="42" fill="url(#duskSkyAura)" opacity="0"/>
+            <ellipse id="sky-night-aura" cx="71" cy="55" rx="66" ry="42" fill="url(#nightSkyAura)" opacity="0"/>
+
+            <!-- Subtle Tiny Pinprick Stars (tucked lower in the sky, well away from the top edge) -->
+            <g id="night-stars" opacity="0" filter="url(#starGlow)">
+              <circle class="twinkle-star" data-phase="0.0" cx="22" cy="54" r="0.65" fill="#d8eeff"/>
+              <circle class="twinkle-star" data-phase="1.3" cx="31" cy="45" r="0.75" fill="#b8dcff"/>
+              <circle class="twinkle-star" data-phase="2.4" cx="18" cy="68" r="0.55" fill="#d8eeff"/>
+              <circle class="twinkle-star" data-phase="0.8" cx="54" cy="48" r="0.60" fill="#a8d8ff"/>
+              <circle class="twinkle-star" data-phase="1.9" cx="92" cy="44" r="0.70" fill="#d8eeff"/>
+              <circle class="twinkle-star" data-phase="3.1" cx="110" cy="48" r="0.80" fill="#b8dcff"/>
+              <circle class="twinkle-star" data-phase="0.5" cx="122" cy="58" r="0.65" fill="#d8eeff"/>
+              <circle class="twinkle-star" data-phase="2.1" cx="114" cy="70" r="0.55" fill="#a8d8ff"/>
+            </g>
+
+            <!-- 2. CELESTIAL ORBIT LAYER (Behind the Grassy Bump so Sun & Moon set/rise behind the land!) -->
+            <!-- PURE SVG LINELESS SUN (Exact 2D linear-gradient + soft bloom matching Symbol 8 Moon, zero outlines) -->
+            <g id="sun-orb" transform="translate(71, 42)">
+              <g id="sun-shape">
+                <circle cx="0" cy="0" r="26" fill="url(#sunOuterBloom)"/>
+                <circle cx="0" cy="0" r="12.5" fill="url(#sunFillGrad)"/>
+              </g>
+            </g>
+
+            <!-- ANIMATIONS FOLDER MOON (Exact vector & gradient from DesertBG Symbol 8, zero outlines, crescent-only glow) -->
+            <g id="moon-orb" transform="translate(71, 142)">
+              <g id="moon-shape">
+                <g transform="scale(0.32) translate(-74.8, -78.5)" filter="url(#moonCrescentGlow)">
+                  <path d="M 104.95 50.80 Q 105.35 51.00 105.80 50.85 Q 106.30 50.70 106.50 50.30 Q 106.85 49.65 106.40 49.05 Q 100.35 41.80 91.35 38.45 Q 82.65 35.25 73.20 36.35 Q 63.60 37.45 55.50 42.75 Q 46.85 48.40 41.65 57.70 Q 33.10 72.80 37.75 89.55 Q 42.40 106.25 57.50 114.80 Q 65.00 119.05 73.65 119.95 Q 88.15 121.65 99.80 114.20 Q 110.95 107.05 113.90 95.20 Q 114.10 94.45 113.70 93.80 Q 113.30 93.15 112.55 92.95 Q 111.60 92.65 110.80 93.40 Q 106.65 97.45 100.25 99.95 Q 94.45 102.25 88.15 102.85 Q 73.05 104.25 65.85 96.60 Q 59.85 90.30 59.70 78.35 Q 59.65 69.45 64.25 62.25 Q 68.45 55.65 75.70 51.70 Q 82.70 47.85 90.45 47.55 Q 98.50 47.25 104.95 50.80 Z"
+                        fill="url(#animMoonFill)"/>
+                </g>
+              </g>
+            </g>
+
+            <!-- 3. LINELESS MOSSY STONE LEDGE (Concept 02 without outlines, flush with header border y=108) -->
+            <g id="land-mound">
+              <!-- A. FACETED STONE CLIFF BASE (Zero outlines — sculpted with light/mid/shadow rock planes) -->
+              <g id="stone-ledge">
+                <!-- Main rock silhouette base -->
+                <path id="rock-base" d="M 4.2 108 L 6.8 102.6 L 7.2 98.2 L 134.2 98.5 L 134.8 102.8 L 137.8 108 Z" fill="url(#rockBaseGrad)"/>
+
+                <!-- Left outer dark chiseled rock face -->
+                <path class="rock-dark" d="M 4.2 108 L 6.8 102.6 L 7.2 98.2 L 13.0 98.2 L 11.2 103.2 L 12.2 108 Z" fill="#78695b"/>
+                <!-- Left diagonal shadow facet -->
+                <path class="rock-dark" d="M 16.5 98.2 L 22.8 98.5 L 28.5 108 L 19.2 108 L 15.8 102.5 Z" fill="#7c6d5f"/>
+                <!-- Left-center sunlit stone bevel -->
+                <path class="rock-light" d="M 13.0 98.2 L 16.5 98.2 L 15.8 102.5 L 19.2 108 L 12.2 108 L 11.2 103.2 Z" fill="#a8998a"/>
+                <path class="rock-light" d="M 27.5 101.2 L 54.8 101.8 L 53.5 104.2 L 32.0 103.6 Z" fill="#aea090"/>
+
+                <!-- Center-left stone shadow plane next to left crevice -->
+                <path class="rock-dark" d="M 55.2 101.8 L 82.0 102.2 L 77.5 108 L 55.8 108 Z" fill="#7e6f61"/>
+                <!-- Center-right sunlit stone slab + top bevel highlight -->
+                <path class="rock-light" d="M 82.0 102.2 L 114.2 101.2 L 112.6 108 L 77.5 108 Z" fill="#a59687"/>
+                <path class="rock-bevel" d="M 56.5 102.0 L 114.2 101.0 L 113.5 102.8 L 81.5 104.2 L 57.2 103.4 Z" fill="#b6a798"/>
+
+                <!-- Right stone block facets -->
+                <path class="rock-dark" d="M 112.6 108 L 114.8 101.2 L 121.0 101.5 L 118.2 108 Z" fill="#7a6b5d"/>
+                <path class="rock-light" d="M 119.5 101.5 L 126.5 101.2 L 123.5 108 L 118.2 108 Z" fill="#a69788"/>
+                <path class="rock-dark" d="M 125.0 100.8 L 134.2 98.5 L 134.8 102.8 L 130.5 108 L 123.5 108 Z" fill="#766759"/>
+                <path class="rock-light" d="M 134.8 102.8 L 137.8 108 L 130.5 108 Z" fill="#9c8d7e"/>
+
+                <!-- Soft cast shadow under the overhanging moss lip -->
+                <path id="rock-overhang-shadow" d="M 7.0 98.0 L 134.3 98.4 L 134.5 100.2 C 130.5 100.5, 127.0 102.6, 123.5 103.4 C 119.5 103.8, 116.5 101.6, 113.0 101.5 C 102.0 103.2, 85.0 104.0, 66.0 104.2 C 59.5 104.4, 55.0 102.8, 46.0 103.0 C 37.5 103.2, 31.5 104.0, 25.0 103.4 C 21.0 102.6, 19.0 99.6, 14.5 99.4 C 11.0 99.2, 8.8 99.8, 7.0 99.4 Z" fill="#5e5145" opacity="0.65"/>
+
+                <!-- Lineless rock crevices (left-center & right-center vertical splits) -->
+                <path class="rock-crevice" d="M 54.8 101.6 L 56.3 105.0 L 55.9 108 L 54.6 108 L 55.1 105.2 L 54.0 102.2 Z" fill="#4f4339"/>
+                <path class="rock-crevice" d="M 115.2 100.8 L 114.2 104.6 L 112.9 108 L 111.7 108 L 113.0 104.4 L 114.1 101.2 Z" fill="#4f4339"/>
+              </g>
+
+              <!-- B. LINELESS MOSSY TURF BLANKET & OVERHANGING GRASS TUFTS -->
+              <!-- Tiny 3-blade lineless grass tufts on left and right shoulders -->
+              <path class="moss-lip" d="M 13.8 95.8 L 12.2 92.2 L 14.9 94.4 L 15.8 91.3 L 16.7 94.3 L 18.9 92.4 L 17.6 95.8 Z" fill="#688846"/>
+              <path class="moss-lip" d="M 121.2 96.2 L 119.8 92.8 L 122.3 94.8 L 123.2 91.8 L 124.1 94.8 L 126.2 93.0 L 125.0 96.2 Z" fill="#688846"/>
+
+              <!-- Darker green underside rim of the overhanging moss blanket (creates crisp scalloped grass tips without outlines) -->
+              <path id="moss-underside" class="moss-lip" d="
+                M 6.8 98.2
+                C 11.5 95.0, 24.0 92.2, 42.0 91.0
+                C 56.0 90.2, 86.0 90.2, 100.0 91.0
+                C 118.0 92.2, 130.0 95.2, 134.5 98.5
+                C 133.2 99.6, 131.5 99.4, 129.8 100.4
+                L 128.2 101.6 L 127.2 100.8 L 125.5 102.5 L 124.2 101.5 L 122.6 103.0 L 121.2 101.8 L 119.5 102.4 L 118.2 101.0
+                C 116.5 100.2, 114.5 99.8, 112.2 100.4
+                C 104.5 102.0, 92.0 102.8, 76.0 102.8
+                C 70.5 102.8, 67.2 103.5, 65.2 103.8
+                L 63.8 102.9 L 62.2 103.9 L 60.6 102.8 L 59.0 103.4 L 57.5 102.3
+                C 53.0 101.8, 44.5 101.8, 36.5 102.2
+                L 34.8 102.9 L 33.4 102.0 L 31.6 103.2 L 30.0 102.1 L 28.2 103.1 L 26.8 101.8 L 25.0 102.4 L 23.8 100.8
+                C 21.8 99.5, 19.8 98.4, 16.5 98.2
+                C 13.0 98.0, 9.5 98.8, 6.8 98.2 Z" fill="#688846"/>
+
+              <!-- Main sunlit mossy turf surface (using webpage #91b56c green gradient) -->
+              <path id="land-hill" d="
+                M 7.2 97.5
+                C 12.0 94.5, 24.5 91.8, 42.0 90.6
+                C 56.0 89.8, 86.0 89.8, 100.0 90.6
+                C 117.5 91.8, 129.5 94.6, 134.0 97.8
+                C 132.5 98.7, 130.8 98.6, 129.0 99.6
+                L 127.6 100.6 L 126.6 99.9 L 125.0 101.4 L 123.8 100.5 L 122.2 101.8 L 120.8 100.8 L 119.2 101.3 L 118.0 100.0
+                C 116.2 99.2, 114.2 98.9, 111.8 99.5
+                C 104.0 101.0, 91.8 101.8, 76.0 101.8
+                C 70.5 101.8, 67.2 102.4, 65.2 102.7
+                L 63.8 101.9 L 62.2 102.8 L 60.6 101.8 L 59.0 102.3 L 57.5 101.3
+                C 53.0 100.8, 44.5 100.8, 36.5 101.2
+                L 34.8 101.8 L 33.4 101.0 L 31.6 102.1 L 30.0 101.1 L 28.2 102.0 L 26.8 100.8 L 25.0 101.3 L 23.8 99.8
+                C 21.8 98.6, 19.8 97.6, 16.5 97.4
+                C 13.0 97.2, 9.8 98.0, 7.2 97.5 Z" fill="url(#landGrad)"/>
+
+              <!-- Soft layered contact shadow under the campfire logs -->
+              <ellipse id="fire-shadow-outer" cx="89.5" cy="98.2" rx="15.5" ry="3.0" fill="#1d2814" opacity="0.18"/>
+              <ellipse id="fire-shadow-inner" cx="89.5" cy="98.0" rx="11.8" ry="2.0" fill="#141c0d" opacity="0.28"/>
+
+              <!-- Dynamic Warm Bonfire Light Pool on the Mossy Ledge (flickers when bonfire is lit!) -->
+              <ellipse id="fire-ground-glow" cx="89.5" cy="97.8" rx="20" ry="5.5" fill="url(#fireGroundGlow)" opacity="0"/>
+            </g>
+
+            <!-- 4. STANDING BOOGA (NOMAD) NEXT TO THE FIRE -->
+            <!-- Placed on the mossy stone ledge next to the bonfire -->
+            <g id="nomad-root" transform="translate(48.5, 99.6) scale(0.094) translate(-355, -691)">
+              <!-- Soft layered contact shadow under Nomad's boots (reacts when Nomad jumps!) -->
+              <ellipse id="np-shadow-outer" cx="362" cy="684" rx="136" ry="24" fill="#1d2814" opacity="0.20"/>
+              <ellipse id="np-shadow" cx="362" cy="683" rx="106" ry="16" fill="#141c0d" opacity="0.30"/>
+
+              <!-- Whole-body jumper & squash/stretch group (exact Nomad.ai layer hierarchy) -->
+              <g id="np-body-mover">
+                <!-- 1. RArm (at the very back, behind RLeg/LLeg/Skirt & Body; RFoream+RHand behind URarm) -->
+                <g id="np-torso-back">
+                  <g id="np-rarm">
+                    <g id="np-relbow">
+                      <image id="np-rforearm-fist" href="assets/nomad-puppet/rforearm_crop.webp" x="370" y="375" width="148" height="184"/>
+                      <image id="np-rforearm-open" href="assets/nomad-puppet/rforearm_open_crop.webp" x="370" y="375" width="162" height="207" opacity="0"/>
+                      <image id="np-rforearm-scratch" href="assets/nomad-puppet/rforearm_scratch_crop.webp" x="370" y="375" width="151" height="193" opacity="0"/>
+                    </g>
+                    <image href="assets/nomad-puppet/urarm_crop.webp" x="353" y="270" width="120" height="178"/>
+                  </g>
+                </g>
+
+                <!-- 2. RLeg + LLeg + Skirt (Lower Body) -->
+                <g id="np-legs">
+                  <image href="assets/nomad-puppet/lower_body_crop.webp" x="236" y="417" width="239" height="273"/>
+                </g>
+
+                <!-- 3. Articulated Upper Body (waist pivot 540, 740 in 1150pt space) -->
+                <g id="np-torso">
+                  <!-- Body: Yellow Tunic with Fur Collar, Back Tunic & Stitched Grey Patches -->
+                  <image href="assets/nomad-puppet/body_crop.webp" x="200" y="236" width="288" height="291"/>
+
+                  <!-- LArm: LHand + LForearm behind ULarm -->
+                  <g id="np-larm">
+                    <g id="np-lelbow">
+                      <image id="np-lforearm-fist" href="assets/nomad-puppet/lforearm_crop.webp" x="201" y="374" width="119" height="201"/>
+                      <image id="np-lforearm-open" href="assets/nomad-puppet/lforearm_open_crop.webp" x="201" y="374" width="133" height="225" opacity="0"/>
+                      <image id="np-lforearm-scratch" href="assets/nomad-puppet/lforearm_scratch_crop.webp" x="201" y="374" width="126" height="207" opacity="0"/>
+                    </g>
+                    <image href="assets/nomad-puppet/ularm_crop.webp" x="202" y="270" width="150" height="176"/>
+                  </g>
+
+                  <!-- Head: Hair Back + Head Right -> Eyes -> Nose -> Mouth -> Brows -> Hair -> Earring -->
+                  <g id="np-head">
+                    <image href="assets/nomad-puppet/head_base_crop.webp" x="328" y="170" width="143" height="180"/>
+                    <image id="np-eyes-open" href="assets/nomad-puppet/eyes_open_crop.webp" x="396" y="213" width="52" height="31"/>
+                    <g id="np-pupils">
+                      <image href="assets/nomad-puppet/pupils_crop.webp" x="405" y="224" width="37" height="17"/>
+                    </g>
+                    <image id="np-eyes-closed" href="assets/nomad-puppet/eyes_closed_crop.webp" x="396" y="213" width="52" height="31" opacity="0"/>
+                    <image href="assets/nomad-puppet/nose_crop.webp" x="416" y="234" width="39" height="32"/>
+                    <image id="np-mouth" href="assets/nomad-puppet/viseme_Closed_crop.webp" x="389" y="257" width="71" height="20"/>
+                    <g id="np-brows">
+                      <image href="assets/nomad-puppet/brows_crop.webp" x="381" y="200" width="76" height="24"/>
+                    </g>
+                    <image href="assets/nomad-puppet/hair_front_crop.webp" x="309" y="130" width="165" height="250"/>
+                    <g id="np-earring">
+                      <image href="assets/nomad-puppet/earring_crop.webp" x="344" y="197" width="42" height="136"/>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </svg>
+
+        <!-- 5. ANIMATIONS FOLDER BONFIRE CANVAS (Plays Fireplace0001..0098 from Animations/Fireplace) -->
+        <canvas id="fireplace-canvas" class="fireplace-canvas" width="238" height="403" aria-hidden="true"></canvas>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="eyebrow">A small detail. A little discovery.</div>
+    <h1>MODERN LIFE.<br><span style="color:#91b56c">PREHISTORIC JOY.</span></h1>
+    <p class="intro">A little Boogas magic, tucked into the corner. Tap the sun in the header to change your world.</p>
+
+    <section class="preview">
+      <div>
+        <div class="eyebrow">Hidden until you need it</div>
+        <h2>Modern life. Prehistoric joy.</h2>
+        <p>Creamy stone by day. Charcoal by night.<br>A little discovery in the corner of your site.</p>
+      </div>
+      <div class="sample">
+        <strong>BOOGAS</strong>
+        <span>BOUNCE IT</span>
+      </div>
+    </section>
+
+    <footer>
+      <span id="status">Tap the sun in the header · Nomad hits it into orbit</span>
+      <span>INTERACTION CONCEPT</span>
+    </footer>
+  </main>
+
+  <script>
+    (() => {
+      const $ = id => document.getElementById(id);
+      const stage = $('header-stage');
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+      const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+      const lerp = (a, b, t) => a + (b - a) * t;
+      const rgb = h => h.match(/[a-f\d]{2}/gi).map(x => parseInt(x, 16));
+      function mix(a, b, t) {
+        a = rgb(a);
+        b = rgb(b);
+        return 'rgb(' + a.map((x, i) => Math.round(x + (b[i] - x) * t)).join(',') + ')';
+      }
+
+      // Rigged Nomad helper (converts 1150pt rig coordinates into 750px SVG puppet space)
+      const PUPPET_SCALE = 750 / 1150;
+      const svgPivot = (px1150, py1150, deg = 0, dx1150 = 0, dy1150 = 0) => {
+        const px = px1150 * PUPPET_SCALE;
+        const py = py1150 * PUPPET_SCALE;
+        const dx = dx1150 * PUPPET_SCALE;
+        const dy = dy1150 * PUPPET_SCALE;
+        return `translate(${(px + dx).toFixed(2)} ${(py + dy).toFixed(2)}) rotate(${deg.toFixed(2)}) translate(${(-px).toFixed(2)} ${(-py).toFixed(2)})`;
+      };
+
+      const VISEMES = {
+        Closed:    { href: 'assets/nomad-puppet/viseme_Closed_crop.webp',    x: 389, y: 257, w: 71, h: 20 },
+        Ee:        { href: 'assets/nomad-puppet/viseme_Ee_crop.webp',        x: 399, y: 265, w: 58, h: 27 },
+        Ah:        { href: 'assets/nomad-puppet/viseme_Ah_crop.webp',        x: 393, y: 263, w: 67, h: 33 },
+        Surprised: { href: 'assets/nomad-puppet/viseme_Surprised_crop.webp', x: 422, y: 268, w: 22, h: 23 }
+      };
+
+      let currentViseme = 'Closed';
+      const mouthEl = $('np-mouth');
+      function setViseme(name) {
+        if (currentViseme === name || !VISEMES[name]) return;
+        currentViseme = name;
+        const v = VISEMES[name];
+        mouthEl.setAttribute('href', v.href);
+        mouthEl.setAttribute('x', v.x);
+        mouthEl.setAttribute('y', v.y);
+        mouthEl.setAttribute('width', v.w);
+        mouthEl.setAttribute('height', v.h);
+      }
+
+      // ========================================================================
+      // 1. ANIMATIONS FOLDER BONFIRE SPRITESHEET PLAYER (Fireplace0001..0098)
+      // ========================================================================
+      // Clips from Fireplace 2.fla:
+      // - fire_idle:  frames 0..29  (Lit roaring bonfire loop for Night mode)
+      // - extinguish: frames 30..38 (Fire dying down into smoke for Night -> Day)
+      // - smoke_idle: frames 39..89 (Unlit logs + gently rising smoke loop for Day mode)
+      // - ignite:     frames 90..97 (Spark igniting smoke into roaring fire for Day -> Night)
+      const fireCanvas = $('fireplace-canvas');
+      const fireCtx = fireCanvas.getContext('2d');
+      const fireSheet = new Image();
+      fireSheet.src = 'assets/fireplace-sheet.webp';
+      let fireSheetLoaded = false;
+      fireSheet.onload = () => {
+        fireSheetLoaded = true;
+        drawFireFrame(fireFrameIndex);
+      };
+
+      let fireClip = 'smoke_idle';
+      let fireFrameIndex = 40;
+      let lastFireStep = performance.now();
+      const FIRE_FPS = 30;
+
+      function setFireTargetNight(isNight, immediate = false) {
+        if (immediate) {
+          fireClip = isNight ? 'fire_idle' : 'smoke_idle';
+          fireFrameIndex = isNight ? 0 : 40;
+          return;
+        }
+        if (isNight && (fireClip === 'smoke_idle' || fireClip === 'extinguish')) {
+          fireClip = 'ignite';
+          fireFrameIndex = 90;
+        } else if (!isNight && (fireClip === 'fire_idle' || fireClip === 'ignite')) {
+          fireClip = 'extinguish';
+          fireFrameIndex = 30;
+        }
+      }
+
+      function stepFireplace(now) {
+        if (now - lastFireStep >= 1000 / FIRE_FPS) {
+          lastFireStep = now;
+          if (fireClip === 'fire_idle') {
+            fireFrameIndex = (fireFrameIndex + 1) % 30;
+          } else if (fireClip === 'extinguish') {
+            fireFrameIndex++;
+            if (fireFrameIndex > 38) {
+              fireClip = 'smoke_idle';
+              fireFrameIndex = 39;
+            }
+          } else if (fireClip === 'smoke_idle') {
+            fireFrameIndex++;
+            if (fireFrameIndex > 89 || fireFrameIndex < 39) fireFrameIndex = 39;
+          } else if (fireClip === 'ignite') {
+            fireFrameIndex++;
+            if (fireFrameIndex > 97) {
+              fireClip = 'fire_idle';
+              fireFrameIndex = 0;
+            }
+          }
+          drawFireFrame(fireFrameIndex);
+        }
+      }
+
+      function drawFireFrame(frameIdx) {
+        if (!fireSheetLoaded) return;
+        const fw = 238, fh = 403, cols = 10;
+        const col = frameIdx % cols;
+        const row = Math.floor(frameIdx / cols);
+        fireCtx.clearRect(0, 0, fw, fh);
+        fireCtx.drawImage(fireSheet, col * fw, row * fh, fw, fh, 0, 0, fw, fh);
+      }
+
+      // ========================================================================
+      // 2. CELESTIAL ORBIT WHEEL & PAGE THEME SYNCHRONIZATION
+      // ========================================================================
+      // wheelDeg:
+      //   0 deg   = Day (Sun at top perch (162, 32), Moon hidden below land at (162, 164))
+      //   180 deg = Night (Moon at top perch (162, 32), Sun hidden below land at (162, 164))
+      //   Every hit rotates wheelDeg forward by +180 deg so the active orb sets on the right
+      //   behind the land mound while the new orb rises on the left from behind the land mound!
+      let wheelDeg = 0;
+      let targetStopIndex = 0; // even = Day, odd = Night
+      let actionState = null;  // { mode: 'hit' | 'settle', startTime, fromDeg, toDeg, toNight }
+      let dragging = false;
+      let dragStartX = 0;
+      let dragStartY = 0;
+      let dragStartDeg = 0;
+      let dragUx = 0;
+      let dragUy = 1;
+      let dragDir = 1;
+      let pointerMoved = false;
+
+      const ORBIT_CX = 71;
+      const ORBIT_CY = 92;
+      const ORBIT_RX = 31;
+      const ORBIT_RY = 50;
+
+      function getNightFactorFromWheel(deg) {
+        // Maps 0 deg -> 0 (Day), 180 deg -> 1 (Night), 360 deg -> 0 (Day) smoothly
+        const rad = (deg * Math.PI) / 180;
+        return (1 - Math.cos(rad)) * 0.5;
+      }
+
+      function applyWorldTheme(deg, remember = false) {
+        wheelDeg = deg;
+        const t = getNightFactorFromWheel(deg); // 0 = Day, 1 = Night
+        const fade = clamp((t - 0.12) / 0.88);
+        const dark = fade * fade * (3 - 2 * fade);
+        const dusk = Math.sin(t * Math.PI);
+
+        // Update CSS variables on body (matching boogas-drag-the-sun.expertcarp2.chatgpt.site)
+        document.body.style.setProperty('--paper', mix('EEE6D6', '20221F', dark));
+        document.body.style.setProperty('--ink', mix('20221F', 'EEE6D6', dark));
+        document.body.style.setProperty('--panel', mix('E3D8C0', '2B3026', dark));
+        document.body.style.setProperty('--line', dark > 0.5 ? '#eee6d630' : '#20221f30');
+        document.body.style.setProperty('--soft', dark > 0.5 ? '#eee6d6aa' : '#20221faa');
+        document.body.style.setProperty('--logo', dark > 0.5 ? 'brightness(0) invert(1)' : 'brightness(0)');
+
+        const themeMeta = document.querySelector('meta[name="theme-color"]');
+        if (themeMeta) themeMeta.setAttribute('content', dark > 0.5 ? '#20221F' : '#EEE6D6');
+
+        // Sky auras & stars
+        $('sky-day-aura').setAttribute('opacity', (1 - dark).toFixed(3));
+        $('sky-dusk-aura').setAttribute('opacity', (dusk * 0.92).toFixed(3));
+        $('sky-night-aura').setAttribute('opacity', dark.toFixed(3));
+        $('night-stars').setAttribute('opacity', clamp((dark - 0.25) / 0.75).toFixed(3));
+
+        // Lineless Mossy Stone Ledge Day/Night palette interpolation
+        $('land-stop-0').setAttribute('stop-color', mix('96B970', '4B5F3B', dark));
+        $('land-stop-1').setAttribute('stop-color', mix('87AB62', '3B4C2E', dark));
+        $('land-stop-2').setAttribute('stop-color', mix('749750', '2D3B22', dark));
+        const mossLipColor = mix('688846', '24301B', dark);
+        document.querySelectorAll('.moss-lip').forEach(el => el.setAttribute('fill', mossLipColor));
+
+        $('rock-stop-0').setAttribute('stop-color', mix('9E8F80', '4D463F', dark));
+        $('rock-stop-1').setAttribute('stop-color', mix('847567', '38322D', dark));
+        const rockDarkColor = mix('7A6B5D', '332E29', dark);
+        const rockLightColor = mix('A8998A', '585048', dark);
+        const rockBevelColor = mix('B6A798', '645B52', dark);
+        const rockCreviceColor = mix('4F4339', '1E1A17', dark);
+        document.querySelectorAll('.rock-dark').forEach(el => el.setAttribute('fill', rockDarkColor));
+        document.querySelectorAll('.rock-light').forEach(el => el.setAttribute('fill', rockLightColor));
+        document.querySelectorAll('.rock-bevel').forEach(el => el.setAttribute('fill', rockBevelColor));
+        document.querySelectorAll('.rock-crevice').forEach(el => el.setAttribute('fill', rockCreviceColor));
+        $('rock-overhang-shadow').setAttribute('fill', mix('5E5145', '221E1A', dark));
+
+        // Position Sun & Moon along the 360° orbital wheel
+        const sunAngleRad = ((deg - 90) * Math.PI) / 180;
+        const moonAngleRad = ((deg + 90) * Math.PI) / 180;
+
+        const sunX = ORBIT_CX + Math.cos(sunAngleRad) * ORBIT_RX;
+        const sunY = ORBIT_CY + Math.sin(sunAngleRad) * ORBIT_RY;
+        const moonX = ORBIT_CX + Math.cos(moonAngleRad) * ORBIT_RX;
+        const moonY = ORBIT_CY + Math.sin(moonAngleRad) * ORBIT_RY;
+
+        $('sun-orb').setAttribute('transform', `translate(${sunX.toFixed(2)}, ${sunY.toFixed(2)})`);
+        $('moon-orb').setAttribute('transform', `translate(${moonX.toFixed(2)}, ${moonY.toFixed(2)})`);
+
+        $('status').textContent =
+          t < 0.35
+            ? 'Hello, sunshine · Tap the sun in the header'
+            : t < 0.75
+            ? 'Golden hour by the campfire'
+            : 'Late nights by the Boogas bonfire · Tap the moon';
+
+        if (remember) {
+          try {
+            localStorage.setItem('boogas-sun-demo', dark > 0.5 ? '100' : '0');
+          } catch {}
+        }
+      }
+
+      // ========================================================================
+      // 3. STANDING BOOGA RIG ANIMATION (Idle + Fun Idle Quirks + Uppercut Hit)
+      // ========================================================================
+      let idleQuirk = null; // { type: 'scratch_butt' | 'scratch_head', startTime, duration }
+      let nextQuirkTime = performance.now() + 3400;
+      let lastQuirkType = 'scratch_head';
+      window.triggerBoogaQuirk = type => {
+        idleQuirk = {
+          type,
+          startTime: performance.now(),
+          duration: type === 'scratch_butt' ? 1750 : 1850
+        };
+      };
+
+      function triggerBoogaHit() {
+        idleQuirk = null;
+        const nextStop = targetStopIndex + 1;
+        const toNight = (nextStop % 2) === 1;
+        targetStopIndex = nextStop;
+
+        if (reduceMotion.matches) {
+          setFireTargetNight(toNight, true);
+          applyWorldTheme(targetStopIndex * 180, true);
+          return;
+        }
+
+        actionState = {
+          mode: 'hit',
+          startTime: performance.now(),
+          fromDeg: wheelDeg,
+          toDeg: targetStopIndex * 180,
+          toNight,
+          sparkTriggered: false
+        };
+      }
+
+      function tickScene(now) {
+        stepFireplace(now);
+
+        const sec = now * 0.001;
+
+        // Twinkle night stars
+        const starNodes = document.querySelectorAll('.twinkle-star');
+        starNodes.forEach(st => {
+          const ph = parseFloat(st.getAttribute('data-phase') || '0');
+          const op = 0.22 + 0.58 * (0.5 + 0.5 * Math.sin(sec * 2.4 + ph * 2.1));
+          st.setAttribute('opacity', op.toFixed(2));
+        });
+
+        // Flicker the warm bonfire ground light pool when fire is lit or igniting
+        const isFireLit = fireClip === 'fire_idle' || fireClip === 'ignite';
+        const tNight = getNightFactorFromWheel(wheelDeg);
+        const flicker = 0.84 + 0.16 * Math.sin(sec * 19) * Math.cos(sec * 11);
+        const glowOpacity = (isFireLit ? Math.max(0.35, tNight) : tNight * 0.3) * flicker;
+        $('fire-ground-glow').setAttribute('opacity', glowOpacity.toFixed(3));
+
+        // Base Standing Booga Pose next to the fire (centered at exact 0 deg Nomad.ai pose!)
+        const breath = Math.sin(sec * 2.3);
+        let torsoRot = breath * 0.5;
+        let torsoDx = 0;
+        let torsoDy = breath * 1.4;
+        let headRot = Math.sin(sec * 1.6 - 0.4) * 1.2;
+        let rarmRot = breath * 0.8;
+        let rarmDx = 0;
+        let rarmDy = 0;
+        let relbowRot = Math.cos(sec * 2.3) * 1.0;
+        let larmRot = -breath * 0.7;
+        let larmDx = 0;
+        let larmDy = 0;
+        let lelbowRot = Math.sin(sec * 2.3) * 0.8;
+        let lelbowDx = 0;
+        let lelbowDy = 0;
+        let legsRot = 0;
+        let legsDx = 0;
+        let browDy = 0;
+        let browRot = 0;
+        let pupilDx = 0;
+        let pupilDy = 0;
+        let jumpY = 0;
+        let squashX = 1;
+        let squashY = 1;
+        let orbScaleX = 1;
+        let orbScaleY = 1;
+        let orbRot = 0;
+        let lhandPose = 'fist';
+        let rhandPose = 'fist';
+
+        // Natural periodic blink
+        const blinkCycle = (sec + 1.4) % 4.5;
+        let isBlinking = blinkCycle > 4.32;
+
+        // Active Jump-Uppercut Hit or Smooth Drag-Release Settle Sequence
+        if (actionState && actionState.mode === 'settle') {
+          const elapsed = now - actionState.startTime;
+          const dur = actionState.duration || 360;
+          const u = clamp(elapsed / dur);
+          const easeOut = 1 - Math.pow(1 - u, 3);
+          const curDeg = lerp(actionState.fromDeg, actionState.toDeg, easeOut);
+          applyWorldTheme(curDeg, false);
+          if (u >= 1) {
+            applyWorldTheme(actionState.toDeg, true);
+            actionState = null;
+            nextQuirkTime = now + 4200 + Math.random() * 2200;
+          }
+        } else if (actionState) {
+          const elapsed = now - actionState.startTime;
+          const windupEnd = 280; // ms wind-up + coil hold: raises & cocks fist back before hitting!
+          const hitTime = 410;   // ms airborne apex when fist smashes the Sun/Moon
+          const landTime = 620;  // ms landing back on the turf
+          const totalTime = 1100; // ms full orbital settle
+
+          if (elapsed <= windupEnd) {
+            // Phase 1: Wind-up — lean torso back & raise/cock the fist back toward his head/shoulder!
+            const p = clamp(elapsed / windupEnd);
+            // Fast snap into the cocked-back pose (first 55%), then brief coil hold so the eye clearly registers it
+            const ease = p < 0.55
+              ? 0.9 * (1 - Math.pow(1 - (p / 0.55), 2.5))
+              : 0.9 + 0.1 * ((p - 0.55) / 0.45);
+
+            jumpY = lerp(0, 15, ease);
+            squashX = lerp(1, 1.07, ease);
+            squashY = lerp(1, 0.91, ease);
+            torsoRot = lerp(torsoRot, 16, ease);
+            torsoDx = lerp(0, -22, ease);
+            torsoDy = lerp(torsoDy, 9, ease);
+            headRot = lerp(headRot, -12, ease);
+            // Lift upper arm (-96 deg) & cock forearm UP and TO THE BACK (-76 deg) so fist is raised back beside his temple
+            rarmRot = lerp(rarmRot, -96, ease);
+            rarmDx = lerp(0, 8, ease);
+            rarmDy = lerp(0, -8, ease);
+            relbowRot = lerp(relbowRot, -76, ease);
+            larmRot = lerp(larmRot, 26, ease);
+            lelbowRot = lerp(lelbowRot, -14, ease);
+            pupilDx = 2.5;
+            pupilDy = -6;
+            browDy = 4 * ease;
+            setViseme('Closed');
+          } else if (elapsed <= hitTime) {
+            // Phase 2: Explosive jump & skyward uppercut uncoiling from the cocked-back fist into the Sun/Moon!
+            const p = clamp((elapsed - windupEnd) / (hitTime - windupEnd));
+            const easeOut = 1 - Math.pow(1 - p, 2.2);
+            jumpY = lerp(15, -56, easeOut);
+            squashX = lerp(1.07, 0.94, easeOut);
+            squashY = lerp(0.91, 1.08, easeOut);
+            torsoRot = lerp(16, -11, easeOut);
+            torsoDx = lerp(-22, 8, easeOut);
+            torsoDy = lerp(9, -6, easeOut);
+            headRot = lerp(-12, -16, easeOut);
+            rarmRot = lerp(-96, -110, easeOut);
+            rarmDx = lerp(8, 2, easeOut);
+            rarmDy = lerp(-8, 2, easeOut);
+            relbowRot = lerp(-76, -10, easeOut);
+            larmRot = lerp(26, 32, easeOut);
+            lelbowRot = lerp(-14, 18, easeOut);
+            pupilDx = 3.5;
+            pupilDy = -8;
+            browDy = lerp(4, -7, easeOut);
+            setViseme(p > 0.3 ? 'Ah' : 'Closed');
+          } else {
+            // Phase 3: Impact, orbital launch behind the land mound & landing recovery
+            if (!actionState.sparkTriggered) {
+              actionState.sparkTriggered = true;
+              setFireTargetNight(actionState.toNight, false);
+            }
+
+            const orbitElapsed = elapsed - hitTime;
+            const orbitDur = totalTime - hitTime;
+            const u = clamp(orbitElapsed / orbitDur);
+
+            // Fast launch off the hit with a subtle springy overshoot settle at the end
+            const c1 = 1.15;
+            const c3 = c1 + 1;
+            const springOut = 1 + c3 * Math.pow(u - 1, 3) + c1 * Math.pow(u - 1, 2);
+            const easeOrbit = 0.22 * u + 0.78 * springOut;
+            const curDeg = lerp(actionState.fromDeg, actionState.toDeg, easeOrbit);
+            applyWorldTheme(curDeg, false);
+
+            // Juicy squash-and-stretch on the struck orb during initial launch
+            if (orbitElapsed < 210) {
+              const k = 1 - orbitElapsed / 210;
+              orbScaleX = 1 + 0.16 * k;
+              orbScaleY = 1 - 0.12 * k;
+              orbRot = 18 * k;
+            }
+
+            // Nomad descent from jump + soft landing squash + settle back to relaxed idle
+            if (elapsed <= landTime) {
+              const lp = clamp((elapsed - hitTime) / (landTime - hitTime));
+              const fall = lp * lp;
+              jumpY = lerp(-56, 10, fall);
+              squashX = lerp(0.94, 1.06, fall);
+              squashY = lerp(1.08, 0.93, fall);
+              torsoRot = lerp(-11, 4, fall);
+              torsoDx = lerp(8, 0, fall);
+              headRot = lerp(-16, 2, fall);
+              rarmRot = lerp(-110, 2, fall);
+              rarmDx = lerp(2, 0, fall);
+              relbowRot = lerp(-10, 4, fall);
+              larmRot = lerp(32, 10, fall);
+              lelbowRot = lerp(18, -2, fall);
+            } else {
+              const rp = clamp((elapsed - landTime) / (totalTime - landTime));
+              const settle = 1 - Math.pow(1 - rp, 2.4);
+              jumpY = lerp(10, 0, settle);
+              squashX = lerp(1.06, 1, settle);
+              squashY = lerp(0.93, 1, settle);
+              torsoRot = lerp(4, 0, settle);
+              headRot = lerp(2, 0, settle);
+              rarmRot = lerp(2, 0, settle);
+              relbowRot = lerp(4, 0, settle);
+              larmRot = lerp(10, 0, settle);
+              lelbowRot = lerp(-2, 0, settle);
+            }
+
+            pupilDx = Math.cos(u * Math.PI) * 5.5;
+            pupilDy = Math.sin(u * Math.PI) * 3.5;
+            setViseme(u < 0.38 ? 'Ee' : 'Closed');
+
+            if (u >= 1) {
+              applyWorldTheme(actionState.toDeg, true);
+              actionState = null;
+              nextQuirkTime = now + 4200 + Math.random() * 2200;
+              setViseme('Closed');
+            }
+          }
+        } else {
+          // Fun periodic idle moments when Nomad is hanging out by the fire
+          if (!dragging && !reduceMotion.matches && !idleQuirk && now >= nextQuirkTime) {
+            const nextType = lastQuirkType === 'scratch_butt' ? 'scratch_head' : 'scratch_butt';
+            lastQuirkType = nextType;
+            idleQuirk = {
+              type: nextType,
+              startTime: now,
+              duration: nextType === 'scratch_butt' ? 1750 : 1850
+            };
+          }
+
+          if (idleQuirk) {
+            const qElapsed = now - idleQuirk.startTime;
+            const qp = clamp(qElapsed / idleQuirk.duration);
+            if (qp >= 1) {
+              idleQuirk = null;
+              nextQuirkTime = now + 5200 + Math.random() * 3200;
+              setViseme('Closed');
+            } else {
+              // Smooth envelope in (0..0.22), hold (0.22..0.78), and out (0.78..1.0)
+              const env = qp < 0.22
+                ? (qp / 0.22) * (qp / 0.22) * (3 - 2 * (qp / 0.22))
+                : qp < 0.78
+                ? 1
+                : 1 - ((qp - 0.78) / 0.22) * ((qp - 0.78) / 0.22) * (3 - 2 * ((qp - 0.78) / 0.22));
+              const scratchActive = qp >= 0.18 && qp <= 0.82
+                ? Math.sin(((qp - 0.18) / 0.64) * Math.PI)
+                : 0;
+              const wave = Math.sin(qp * Math.PI * 9.5) * scratchActive;
+
+              if (idleQuirk.type === 'scratch_butt') {
+                // Nomad sticks his butt out slightly, squints with a relieved grin, and scrubs his butt cheek with his left scratch hand!
+                torsoRot = lerp(torsoRot, -7.0 + wave * 2.2, env);
+                torsoDx = lerp(0, 6, env);
+                torsoDy = lerp(torsoDy, 3.5 + Math.abs(wave) * 2.4, env);
+                legsRot = lerp(0, -5.0 + wave * 2.8, env);
+                legsDx = lerp(0, -9 + wave * 3.5, env);
+                headRot = lerp(headRot, 7.5 - wave * 2.8, env);
+                // Keep shoulder seated; swing forearm & hand onto butt cheek and scrub up & down inside the 72px elbow overlap
+                larmRot = lerp(larmRot, 13 + wave * 8.5, env);
+                larmDx = lerp(0, 4, env);
+                larmDy = lerp(0, -6 + wave * 6, env);
+                lelbowRot = lerp(lelbowRot, 14 - wave * 18, env);
+                lelbowDx = lerp(0, 6 - wave * 5, env);
+                lelbowDy = lerp(0, -34 + wave * 28, env);
+                if (qp >= 0.14 && qp <= 0.86) {
+                  lhandPose = 'scratch';
+                }
+                jumpY = Math.abs(wave) * 4.0 * env;
+                squashX = 1 + 0.022 * wave * env;
+                squashY = 1 - 0.022 * wave * env;
+                browDy = -4.5 * env;
+                pupilDx = -4.2 * env;
+                pupilDy = 1.0 * env;
+                if (qp > 0.30 && qp < 0.70) isBlinking = true;
+                setViseme(qp > 0.24 && qp < 0.76 ? 'Ee' : 'Closed');
+              } else {
+                // Nomad tilts his head into his right hand and scratches his head/hair
+                torsoRot = lerp(torsoRot, 2.5 + wave * 1.0, env);
+                headRot = lerp(headRot, 9.5 + wave * 3.4, env);
+                rarmRot = lerp(rarmRot, -94 - wave * 3.5, env);
+                rarmDx = lerp(0, 6, env);
+                rarmDy = lerp(0, -8 + wave * 5.5, env);
+                relbowRot = lerp(relbowRot, -82 + wave * 9.5, env);
+                larmRot = lerp(larmRot, 5, env);
+                if (qp >= 0.14 && qp <= 0.86) {
+                  rhandPose = 'scratch';
+                }
+                browDy = -3.8 * env;
+                browRot = -3 * env;
+                pupilDx = 2.2 * env;
+                pupilDy = -5.5 * env;
+                setViseme(qp > 0.28 && qp < 0.72 ? 'Surprised' : 'Closed');
+              }
+            }
+          } else if (dragging && pointerMoved) {
+            // While user drags the Sun/Moon with finger or mouse, Nomad watches the sky
+            headRot = lerp(headRot, -8, 0.7);
+            pupilDx = 2.0;
+            pupilDy = -5.0;
+            browDy = -3.0;
+            setViseme('Surprised');
+          } else {
+            setViseme('Closed');
+          }
+        }
+
+        // Apply active hand poses (Fist / Open / Scratch)
+        $('np-lforearm-fist').setAttribute('opacity', lhandPose === 'fist' ? '1' : '0');
+        $('np-lforearm-open').setAttribute('opacity', lhandPose === 'open' ? '1' : '0');
+        $('np-lforearm-scratch').setAttribute('opacity', lhandPose === 'scratch' ? '1' : '0');
+        $('np-rforearm-fist').setAttribute('opacity', rhandPose === 'fist' ? '1' : '0');
+        $('np-rforearm-open').setAttribute('opacity', rhandPose === 'open' ? '1' : '0');
+        $('np-rforearm-scratch').setAttribute('opacity', rhandPose === 'scratch' ? '1' : '0');
+
+        // Apply orb launch deformation
+        const orbDeform = `rotate(${orbRot.toFixed(1)}) scale(${orbScaleX.toFixed(3)} ${orbScaleY.toFixed(3)})`;
+        $('sun-shape').setAttribute('transform', orbDeform);
+        $('moon-shape').setAttribute('transform', orbDeform);
+
+        // Apply whole-body jump & squash/stretch around feet (360, 685)
+        $('np-body-mover').setAttribute(
+          'transform',
+          `translate(360 ${(685 + jumpY).toFixed(1)}) scale(${squashX.toFixed(3)} ${squashY.toFixed(3)}) translate(-360 -685)`
+        );
+
+        // Ground shadow reacts dynamically to jump height
+        const airFactor = clamp(-jumpY / 56);
+        $('np-shadow-outer').setAttribute('rx', (138 * (1 - 0.32 * airFactor)).toFixed(1));
+        $('np-shadow-outer').setAttribute('opacity', (0.13 * (1 - 0.52 * airFactor)).toFixed(3));
+        $('np-shadow').setAttribute('rx', (108 * (1 - 0.32 * airFactor)).toFixed(1));
+        $('np-shadow').setAttribute('opacity', (0.22 * (1 - 0.52 * airFactor)).toFixed(3));
+
+        // Apply transforms to Standing Nomad SVG joints (exact Nomad.ai joint pivots)
+        const torsoXf = svgPivot(540, 740, torsoRot, torsoDx, torsoDy);
+        $('np-torso-back').setAttribute('transform', torsoXf);
+        $('np-torso').setAttribute('transform', torsoXf);
+        $('np-head').setAttribute('transform', svgPivot(575, 460, headRot, 0, 0));
+        $('np-rarm').setAttribute('transform', svgPivot(600, 480, rarmRot, rarmDx, rarmDy));
+        $('np-relbow').setAttribute('transform', svgPivot(635, 620, relbowRot, 0, 0));
+        $('np-legs').setAttribute('transform', svgPivot(550, 1040, legsRot, legsDx, 0));
+        $('np-larm').setAttribute('transform', svgPivot(395, 470, larmRot, larmDx, larmDy));
+        $('np-lelbow').setAttribute('transform', svgPivot(380, 630, lelbowRot, lelbowDx, lelbowDy));
+        $('np-brows').setAttribute('transform', svgPivot(645, 324, browRot, 0, browDy));
+        $('np-pupils').setAttribute('transform', `translate(${(pupilDx * PUPPET_SCALE).toFixed(2)} ${(pupilDy * PUPPET_SCALE).toFixed(2)})`);
+        $('np-earring').setAttribute('transform', svgPivot(548, 315, -headRot * 0.65 + Math.sin(sec * 2.5) * 2.2, 0, 0));
+
+        $('np-eyes-open').setAttribute('opacity', isBlinking ? '0' : '1');
+        $('np-eyes-closed').setAttribute('opacity', isBlinking ? '1' : '0');
+
+        requestAnimationFrame(tickScene);
+      }
+
+      // ========================================================================
+      // 4. POINTER & KEYBOARD INTERACTION (Tap to Hit Orbit, or Drag Side/Down)
+      // ========================================================================
+      const FULL_SWIPE_PX = 62; // Finger distance (sideways, downward, or diagonal) for a full 180° transition
+
+      stage.addEventListener('pointerdown', e => {
+        if (e.button && e.button !== 0) return;
+        dragging = true;
+        pointerMoved = false;
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+        dragStartDeg = wheelDeg;
+        dragUx = 0;
+        dragUy = 1;
+        dragDir = 1;
+        stage.classList.add('dragging');
+        try {
+          stage.setPointerCapture(e.pointerId);
+        } catch {}
+      });
+
+      stage.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        const dx = e.clientX - dragStartX;
+        const dy = e.clientY - dragStartY;
+        const dist = Math.hypot(dx, dy);
+
+        if (!pointerMoved && dist > 5) {
+          pointerMoved = true;
+          actionState = null;
+          idleQuirk = null;
+          // Lock the user's natural swipe axis (works for side movement, downward movement, or diagonal!)
+          dragUx = dx / dist;
+          dragUy = dy / dist;
+          // If dragging left, orb sets on the left (-1); if dragging right or straight down, orb sets on the right (+1)
+          dragDir = dx < -3 ? -1 : 1;
+        }
+
+        if (pointerMoved) {
+          // Project current (dx, dy) onto the locked swipe direction + boost downward pull so any side/down motion scrubs smoothly
+          const alongAxis = dx * dragUx + dy * dragUy;
+          const signedPx = alongAxis >= 0 ? Math.max(alongAxis, dist * 0.85) : alongAxis;
+          const deltaDeg = dragDir * (signedPx / FULL_SWIPE_PX) * 180;
+          const nextDeg = dragStartDeg + deltaDeg;
+          const nightNow = getNightFactorFromWheel(nextDeg) > 0.5;
+          setFireTargetNight(nightNow, false);
+          applyWorldTheme(nextDeg, false);
+        }
+      });
+
+      // Prevent mobile browsers from hijacking vertical downward drags on the stage as page scroll / pull-to-refresh
+      stage.addEventListener('touchmove', e => {
+        if (dragging) e.preventDefault();
+      }, { passive: false });
+
+      function endPointer(e) {
+        if (!dragging) return;
+        dragging = false;
+        stage.classList.remove('dragging');
+        if (e && e.pointerId !== undefined) {
+          try {
+            if (stage.hasPointerCapture(e.pointerId)) stage.releasePointerCapture(e.pointerId);
+          } catch {}
+        }
+
+        if (!pointerMoved) {
+          triggerBoogaHit();
+        } else {
+          const movedDeg = wheelDeg - dragStartDeg;
+          const startStop = Math.round(dragStartDeg / 180);
+          // Commit to the next stop if dragged > 36 deg (~12px), otherwise settle to nearest 180 deg stop
+          if (Math.abs(movedDeg) > 36 && Math.abs(movedDeg) < 144) {
+            targetStopIndex = startStop + (movedDeg > 0 ? 1 : -1);
+          } else {
+            targetStopIndex = Math.round(wheelDeg / 180);
+          }
+          const toDeg = targetStopIndex * 180;
+          const toNight = (Math.abs(targetStopIndex) % 2) === 1;
+          setFireTargetNight(toNight, false);
+
+          const remaining = Math.abs(toDeg - wheelDeg);
+          if (remaining < 1.5 || reduceMotion.matches) {
+            applyWorldTheme(toDeg, true);
+          } else {
+            actionState = {
+              mode: 'settle',
+              startTime: performance.now(),
+              duration: clamp(remaining * 2.2, 160, 380),
+              fromDeg: wheelDeg,
+              toDeg,
+              toNight
+            };
+          }
+        }
+      }
+
+      stage.addEventListener('pointerup', endPointer);
+      stage.addEventListener('pointercancel', endPointer);
+      stage.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          triggerBoogaHit();
+        }
+      });
+
+      // Initialize from saved state or system preference
+      let saved = null;
+      try {
+        saved = localStorage.getItem('boogas-sun-demo');
+      } catch {}
+      const startNight = saved !== null && Number.isFinite(Number(saved))
+        ? Number(saved) >= 50
+        : matchMedia('(prefers-color-scheme: dark)').matches;
+
+      targetStopIndex = startNight ? 1 : 0;
+      setFireTargetNight(startNight, true);
+      applyWorldTheme(targetStopIndex * 180, false);
+      requestAnimationFrame(tickScene);
+    })();
+  </script>
+</body>
+</html>
